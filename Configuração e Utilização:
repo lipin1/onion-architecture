@@ -1,0 +1,29 @@
+using OnionArchitecture.Application.Services;
+using OnionArchitecture.Infrastructure.Repositories;
+using System;
+
+namespace OnionArchitecture.ConsoleApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Configuração da injeção de dependência
+            var productRepository = new ProductRepository();
+            var productService = new ProductService(productRepository);
+
+            // Utilização do serviço de produto
+            productService.AddProduct("Product 1", 10.99m);
+            productService.AddProduct("Product 2", 20.99m);
+
+            productService.PrintAllProducts();
+
+            productService.UpdateProduct(1, "Updated Product 1", 15.99m);
+            productService.DeleteProduct(2);
+
+            productService.PrintAllProducts();
+
+            Console.ReadLine();
+        }
+    }
+}
