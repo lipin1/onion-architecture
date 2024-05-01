@@ -1,0 +1,59 @@
+using OnionArchitecture.Core.Entities;
+using OnionArchitecture.Core.Interfaces;
+using System;
+using System.Linq;
+
+namespace OnionArchitecture.Application.Services
+{
+    public class ProductService
+    {
+        private readonly IProductRepository _productRepository;
+
+        public ProductService(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
+        public void AddProduct(string name, decimal price)
+        {
+            var product = new Product { Name = name, Price = price };
+            _productRepository.Add(product);
+        }
+
+        public void UpdateProduct(int id, string name, decimal price)
+        {
+            var product = _productRepository.GetById(id);
+            if (product != null)
+            {
+                product.Name = name;
+                product.Price = price;
+                _productRepository.Update(product);
+            }
+            else
+            {
+                Console.WriteLine("Product not found.");
+            }
+        }
+
+        public void DeleteProduct(int id)
+        {
+            _productRepository.Delete(id);
+        }
+
+        public void PrintAllProducts()
+        {
+            var products = _productRepository.GetAll();
+            if (products.Any())
+            {
+                foreach (var product in products)
+                {
+                    Console.WriteLine($"Id: {product.Id}, Name: {product.Name}, Price: {product.Price}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No products found.");
+            }
+        }
+    }
+}
